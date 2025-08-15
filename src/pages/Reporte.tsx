@@ -26,7 +26,7 @@ export default function Reporte() {
 
         // Continuar con título e información
         doc.setFontSize(18);
-        doc.text("Reporte de Purificadora Agua Clara", pageWidth / 2, 30 + logoHeight, { align: 'center' });
+        doc.text("Reporte de Purificadora La Fuente", pageWidth / 2, 30 + logoHeight, { align: 'center' });
 
         doc.setFontSize(12);
         doc.text(`Cliente: ${cliente}`, 10, 40 + logoHeight);
