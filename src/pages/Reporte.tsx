@@ -12,7 +12,7 @@ export default function Reporte() {
       const doc = new jsPDF();
 
       // Agregar logo desde la carpeta public y centrarlo
-      const logo = await fetch('/public/lafuente.png');
+      const logo = await fetch('/lafuente.png');
       const logoBlob = await logo.blob();
       const reader = new FileReader();
       reader.onloadend = () => {
