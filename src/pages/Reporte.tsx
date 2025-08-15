@@ -65,7 +65,7 @@ export default function Reporte() {
 
   return (
     <div style={{ textAlign: "center", padding: "30px" }}>
-      <h2>Generar Reporte</h2>
+      <h2>Generar Formato</h2>
       <div
         style={{
           display: "flex",

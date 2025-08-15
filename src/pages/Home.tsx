@@ -7,7 +7,7 @@ export default function Home() {
       <p>Sistema de reportes y control</p>
       <Link to="/menu">
         <button style={{ padding: "10px 20px", fontSize: "1rem", backgroundColor: "#2d9cdb", color: "white", border: "none", borderRadius: "5px" }}>
-          Entrar
+          Puede usted entrar mi amo Rafael
         </button>
       </Link>
     </div>
