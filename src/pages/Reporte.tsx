@@ -21,8 +21,8 @@ export default function Reporte() {
 
         // Obtener dimensiones de página y logo
         const pageWidth = doc.internal.pageSize.getWidth();
-        const logoWidth = 40;
-        const logoHeight = 20; // Ajusta para que no se vea aplastado
+        const logoWidth = 25;
+        const logoHeight = 25; // Ajusta para que no se vea aplastado
         const xPos = (pageWidth - logoWidth) / 2;
 
         // Agregar logo
