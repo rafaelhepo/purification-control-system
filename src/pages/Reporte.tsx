@@ -76,22 +76,25 @@ export default function Reporte() {
         }}
       >
         <input
+          type="date"
+          value={fecha}
+          onChange={(e) => setFecha(e.target.value)}
+        />
+        
+        <input
           type="text"
           placeholder="Cliente"
           value={cliente}
           onChange={(e) => setCliente(e.target.value)}
         />
+        
         <input
           type="number"
           placeholder="Cantidad (litros)"
           value={cantidad}
           onChange={(e) => setCantidad(e.target.value)}
         />
-        <input
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-        />
+        
         <button
           onClick={generarPDF}
           style={{
