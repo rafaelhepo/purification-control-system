@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
-import Reporte from "./pages/Reporte";
+import RDODP from "./pages/RDOP";
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/reporte" element={<Reporte />} />
+        <Route path="/registro-de-ordenes-de-produccion" element={<RDODP />} />
       </Routes>
     </Router>
   );
