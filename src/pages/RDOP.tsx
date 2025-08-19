@@ -108,24 +108,28 @@ export default function RDODP() {
             type="date"
             value={registro.fecha}
             onChange={(e) => handleChange(index, "fecha", e.target.value)}
+            style={{ height: "20px" }}
           />
           <input
             type="number"
             placeholder="Cantidad"
             value={registro.cantidad}
             onChange={(e) => handleChange(index, "cantidad", e.target.value)}
+            style={{ height: "20px" }}
           />
           <input
             type="number"
             placeholder="Lote"
             value={registro.lote}
             onChange={(e) => handleChange(index, "lote", e.target.value)}
+            style={{ height: "20px" }}
           />
           <input
             type="text"
             placeholder="Realizó"
             value={registro.realizo}
             onChange={(e) => handleChange(index, "realizo", e.target.value)}
+            style={{ height: "20px" }}
           />
           <input
             type="text"
@@ -134,6 +138,7 @@ export default function RDODP() {
             onChange={(e) =>
               handleChange(index, "observaciones", e.target.value)
             }
+            style={{ height: "20px" }}
           />
         </div>
       ))}
