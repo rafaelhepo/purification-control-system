@@ -10,6 +10,10 @@ export default function Menu() {
           <button style={{ padding: "10px", fontSize: "1rem", backgroundColor: "#56ccf2", color: "white", border: "none", borderRadius: "5px" }}>📄 Registro de Ordenes de Producción</button>
         </Link>
 
+        <Link to="/registro-de-evaluacion-de-envases">
+          <button style={{ padding: "10px", fontSize: "1rem", backgroundColor: "#56ccf2", color: "white", border: "none", borderRadius: "5px" }}>📄 Registro de Evaluación de Envases</button>
+        </Link>
+
 
 
 
