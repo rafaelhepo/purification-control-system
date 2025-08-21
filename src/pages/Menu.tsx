@@ -14,6 +14,14 @@ export default function Menu() {
           <button style={{ padding: "10px", fontSize: "1rem", backgroundColor: "#56ccf2", color: "white", border: "none", borderRadius: "5px" }}>📄 Registro de Evaluación de Envases</button>
         </Link>
 
+        <Link to="/registro-para-la-limpieza-y-desinfeccion-de-areas">
+          <button style={{ padding: "10px", fontSize: "1rem", backgroundColor: "#56ccf2", color: "white", border: "none", borderRadius: "5px" }}>📄 Registro para Limpieza y Desinfección de Áreas</button>
+        </Link>
+
+        <Link to="/registro-para-la-limpieza-y-desinfeccion-de-equipos">
+          <button style={{ padding: "10px", fontSize: "1rem", backgroundColor: "#56ccf2", color: "white", border: "none", borderRadius: "5px" }}>📄 Registro para Limpieza y Desinfección de Equipos</button>
+        </Link>
+
 
 
 
