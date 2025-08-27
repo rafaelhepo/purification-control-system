@@ -5,19 +5,28 @@ import autoTable from "jspdf-autotable";
 
 type Registro = {
   fecha: string;
-  recibidos: string;
-  aceptados: string;
-  rechazados: string;
-  observaciones: string;
+  cantidadProducida: string;
+  fechaDeVenta: string;
+  lote: string;
+  cantidadVendida: string;
+  reviso: string;
 };
 
-export default function RDEDE() {
+export default function RDPEPS() {
 
+  console.log('Carga con exito');
   const location = useLocation();
   const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
 
   const [registros, setRegistros] = useState<Registro[]>([
-    { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+    {
+      fecha: "",
+      cantidadProducida: "",
+      fechaDeVenta: "",
+      lote: "",
+      cantidadVendida: "",
+      reviso: "",
+    },
   ]);
 
 
@@ -25,7 +34,14 @@ export default function RDEDE() {
     if (registros.length < 12) {
       setRegistros([
         ...registros,
-        { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+        {
+          fecha: "",
+          cantidadProducida: "",
+          fechaDeVenta: "",
+          lote: "",
+          cantidadVendida: "",
+          reviso: "",
+        },
       ]);
     } else {
       alert("Solo se pueden registrar hasta 12 días. (2 semanas)");
@@ -56,29 +72,27 @@ export default function RDEDE() {
         const logoHeight = 25;
         const xPos = (pageWidth - logoWidth) / 2;
 
-        // Logo
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
-        // Título
         doc.setFontSize(16);
         doc.text(
-          "Registro de Evaluación de Envases",
+          "Registro de Primeras Entradas Primeras Salidas",
           pageWidth / 2,
           40,
           { align: "center" }
         );
 
-        // Tabla con todos los registros
+
         autoTable(doc, {
           startY: 50,
-          head: [["Fecha", "Recibidos", "Aceptados", "Rechazados", "Realizó", "Observaciones"]],
+          head: [["Fecha", "Cantidad Producida", "Fecha de Venta", "Lote", "Cantidad Vendida", "Revisó"]],
           body: registros.map((r) => [
             r.fecha,
-            r.recibidos,
-            r.aceptados,
-            r.rechazados,
+            r.cantidadProducida,
+            r.fechaDeVenta,
+            r.lote,
+            r.cantidadVendida,
             nombreUsuario,
-            r.observaciones,
           ]),
           theme: "grid",
           headStyles: { fillColor: [52, 152, 219], textColor: 255 },
@@ -116,7 +130,7 @@ export default function RDEDE() {
       />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
-        Registro de Evaluación de Envases
+        Registro de Primeras Entradas Primeras Salidas
       </h2>
 
       {registros.map((registro, index) => (
@@ -140,43 +154,41 @@ export default function RDEDE() {
             value={registro.fecha}
             onChange={(e) => handleChange(index, "fecha", e.target.value)}
           />
+
           <input
             type="number"
-            placeholder="Recibidos"
-            value={registro.recibidos}
-            onChange={(e) => handleChange(index, "recibidos", e.target.value)}
+            placeholder="Cantidad Producida"
+            value={registro.cantidadProducida}
+            onChange={(e) => handleChange(index, "cantidadProducida", e.target.value)}
           />
+
+          <input
+            type="date"
+            value={registro.fechaDeVenta}
+            onChange={(e) => handleChange(index, "fechaDeVenta", e.target.value)}
+          />
+
           <input
             type="number"
-            placeholder="Aceptados"
-            value={registro.aceptados}
-            onChange={(e) => handleChange(index, "aceptados", e.target.value)}
+            placeholder="Lote"
+            value={registro.lote}
+            onChange={(e) => handleChange(index, "lote", e.target.value)}
           />
+
           <input
             type="number"
-            placeholder="Rechazados"
-            value={registro.rechazados}
-            onChange={(e) => handleChange(index, "rechazados", e.target.value)}
+            placeholder="Cantidad Vendida"
+            value={registro.cantidadVendida}
+            onChange={(e) => handleChange(index, "cantidadVendida", e.target.value)}
           />
+
           <input
             type="text"
-            placeholder="Realizó"
-            value={nombreUsuario} // 👈 siempre el nombre del usuario
+            placeholder="Revisó"
+            value={nombreUsuario}
             readOnly
-            style={{
-              backgroundColor: "#f0f0f0",
-              fontWeight: "bold",
-              color: "#333",
-            }}
           />
-          <input
-            type="text"
-            placeholder="Observaciones"
-            value={registro.observaciones}
-            onChange={(e) =>
-              handleChange(index, "observaciones", e.target.value)
-            }
-          />
+
         </div>
       ))}
 

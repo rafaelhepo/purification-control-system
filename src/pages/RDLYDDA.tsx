@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -19,6 +20,10 @@ type Registro = {
 };
 
 export default function RDLYDDA() {
+  // 👇 Recuperamos el nombre desde Home (igual que en RDODP)
+  const location = useLocation();
+  const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
+
   const [registros, setRegistros] = useState<Registro[]>([
     {
       fecha: "",
@@ -32,7 +37,7 @@ export default function RDLYDDA() {
         oficina: false,
         sanitarios: false,
       },
-      reviso: "",
+      reviso: nombreUsuario,
       observaciones: "",
     },
   ]);
@@ -54,7 +59,7 @@ export default function RDLYDDA() {
             oficina: false,
             sanitarios: false,
           },
-          reviso: "",
+          reviso: nombreUsuario, // 👈 también aquí
           observaciones: "",
         },
       ]);
@@ -84,7 +89,6 @@ export default function RDLYDDA() {
   // Generar PDF en formato horizontal
   const generarPDF = async () => {
     try {
-      // 👇 aquí está el cambio (landscape)
       const doc = new jsPDF({
         orientation: "landscape",
         unit: "mm",
@@ -99,22 +103,18 @@ export default function RDLYDDA() {
       reader.onloadend = () => {
         const imgData = reader.result as string;
 
-        // Dimensiones
         const pageWidth = doc.internal.pageSize.getWidth();
         const logoWidth = 25;
         const logoHeight = 25;
         const xPos = (pageWidth - logoWidth) / 2;
 
-        // Logo
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
-        // Título
         doc.setFontSize(16);
         doc.text("Registro para la Limpieza y Desinfección de Áreas", pageWidth / 2, 40, {
           align: "center",
         });
 
-        // Crear tabla
         autoTable(doc, {
           startY: 50,
           head: [
@@ -135,20 +135,20 @@ export default function RDLYDDA() {
           body: registros.map((r) => [
             r.fecha,
             r.areas.lavado ? "SÍ" : "",
-      r.areas.llenado ? "SÍ" : "",
-      r.areas.equipos ? "SÍ" : "",
-      r.areas.almacen ? "SÍ" : "",
-      r.areas.patio ? "SÍ" : "",
-      r.areas.tanques ? "SÍ" : "",
-      r.areas.oficina ? "SÍ" : "",
-      r.areas.sanitarios ? "SÍ" : "",
-            r.reviso,
+            r.areas.llenado ? "SÍ" : "",
+            r.areas.equipos ? "SÍ" : "",
+            r.areas.almacen ? "SÍ" : "",
+            r.areas.patio ? "SÍ" : "",
+            r.areas.tanques ? "SÍ" : "",
+            r.areas.oficina ? "SÍ" : "",
+            r.areas.sanitarios ? "SÍ" : "",
+            nombreUsuario, // 👈 siempre el usuario en el PDF
             r.observaciones,
           ]),
           theme: "grid",
-          headStyles: { fillColor: [52, 152, 219], textColor: 255 }, // Azul agua
-          bodyStyles: { fillColor: [245, 251, 255] }, // Azul muy claro
-          styles: { fontSize: 9 }, // 👈 Ajusto el tamaño de letra para que quepa mejor
+          headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+          bodyStyles: { fillColor: [245, 251, 255] },
+          styles: { fontSize: 9 },
         });
 
         doc.save("reporte.pdf");
@@ -215,105 +215,33 @@ export default function RDLYDDA() {
 
           {/* Checkboxes de áreas */}
           <div style={{ textAlign: "left" }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.lavado}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "lavado", e.target.checked)
-                }
-              />{" "}
-              Lavado
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.llenado}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "llenado", e.target.checked)
-                }
-              />{" "}
-              Llenado
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.equipos}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "equipos", e.target.checked)
-                }
-              />{" "}
-              Equipos
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.almacen}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "almacen", e.target.checked)
-                }
-              />{" "}
-              Almacén
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.patio}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "patio", e.target.checked)
-                }
-              />{" "}
-              Patio
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.tanques}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "tanques", e.target.checked)
-                }
-              />{" "}
-              Tanques
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.oficina}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "oficina", e.target.checked)
-                }
-              />{" "}
-              Oficina
-            </label>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                checked={registro.areas.sanitarios}
-                onChange={(e) =>
-                  handleCheckboxChange(index, "sanitarios", e.target.checked)
-                }
-              />{" "}
-              Sanitarios
-            </label>
+            {Object.entries(registro.areas).map(([area, valor]) => (
+              <label key={area}>
+                <input
+                  type="checkbox"
+                  checked={valor}
+                  onChange={(e) =>
+                    handleCheckboxChange(index, area as keyof Registro["areas"], e.target.checked)
+                  }
+                />{" "}
+                {area.charAt(0).toUpperCase() + area.slice(1)}
+                <br />
+              </label>
+            ))}
           </div>
 
           <input
             type="text"
             placeholder="Revisó"
-            value={registro.reviso}
-            onChange={(e) => handleChange(index, "reviso", e.target.value)}
+            value={nombreUsuario}
+            readOnly
             style={{
               padding: "10px",
               borderRadius: "8px",
               border: "1px solid #2980b9",
-              outline: "none",
+              backgroundColor: "#dfe6e9",
+              color: "#2d3436",
+              fontWeight: "bold",
             }}
           />
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -6,40 +7,52 @@ type Registro = {
   fecha: string;
   cantidad: string;
   lote: string;
-  realizo: string;
   observaciones: string;
 };
 
 export default function RDODP() {
+
+  const location = useLocation();
+  const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
+
   const [registros, setRegistros] = useState<Registro[]>([
-    { fecha: "", cantidad: "", lote: "", realizo: "", observaciones: "" },
+    {
+      fecha: "",
+      cantidad: "",
+      lote: "",
+      observaciones: "",
+    },
   ]);
 
-  // Agregar un nuevo día (máx 12)
+
   const agregarDia = () => {
     if (registros.length < 12) {
       setRegistros([
         ...registros,
-        { fecha: "", cantidad: "", lote: "", realizo: "", observaciones: "" },
+        {
+          fecha: "",
+          cantidad: "",
+          lote: "",
+          observaciones: "",
+        },
       ]);
     } else {
       alert("Solo se pueden registrar hasta 12 días. (2 semanas)");
     }
   };
 
-  // Manejar cambios en los inputs
+
   const handleChange = (index: number, field: keyof Registro, value: string) => {
     const nuevosRegistros = [...registros];
     nuevosRegistros[index][field] = value;
     setRegistros(nuevosRegistros);
   };
 
-  // Generar PDF
+
   const generarPDF = async () => {
     try {
       const doc = new jsPDF();
 
-      // Usar la ruta correcta (sin /public)
       const logo = await fetch("/lafuente.png");
       const logoBlob = await logo.blob();
       const reader = new FileReader();
@@ -47,16 +60,13 @@ export default function RDODP() {
       reader.onloadend = () => {
         const imgData = reader.result as string;
 
-        // Dimensiones de página y logo
         const pageWidth = doc.internal.pageSize.getWidth();
         const logoWidth = 25;
         const logoHeight = 25;
         const xPos = (pageWidth - logoWidth) / 2;
 
-        // Logo
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
-        // Título
         doc.setFontSize(16);
         doc.text(
           "Registro de Órdenes de Producción",
@@ -65,7 +75,7 @@ export default function RDODP() {
           { align: "center" }
         );
 
-        // Tabla con todos los registros
+
         autoTable(doc, {
           startY: 50,
           head: [["Fecha", "Cantidad", "Lote", "Realizó", "Observaciones"]],
@@ -73,12 +83,12 @@ export default function RDODP() {
             r.fecha,
             r.cantidad,
             r.lote,
-            r.realizo,
+            nombreUsuario,
             r.observaciones,
           ]),
           theme: "grid",
-          headStyles: { fillColor: [52, 152, 219], textColor: 255 }, // Azul agua
-          bodyStyles: { fillColor: [245, 251, 255] }, // Azul muy claro
+          headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+          bodyStyles: { fillColor: [245, 251, 255] },
         });
 
         doc.save("reporte.pdf");
@@ -101,15 +111,15 @@ export default function RDODP() {
         minHeight: "100vh",
       }}
     >
-       <img
-    src="/lafuente.png" 
-    alt="Logo Purificadora"
-    style={{
-      maxWidth: "120px", // tamaño máximo
-      height: "auto",    // mantiene proporción
-      marginBottom: "15px",
-    }}
-  />
+      <img
+        src="/lafuente.png"
+        alt="Logo Purificadora"
+        style={{
+          maxWidth: "120px",
+          height: "auto",
+          marginBottom: "15px",
+        }}
+      />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
         Registro de Órdenes de Producción
@@ -135,48 +145,24 @@ export default function RDODP() {
             type="date"
             value={registro.fecha}
             onChange={(e) => handleChange(index, "fecha", e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #2980b9",
-              outline: "none",
-            }}
           />
           <input
             type="number"
             placeholder="Cantidad"
             value={registro.cantidad}
             onChange={(e) => handleChange(index, "cantidad", e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #2980b9",
-              outline: "none",
-            }}
           />
           <input
             type="number"
             placeholder="Lote"
             value={registro.lote}
             onChange={(e) => handleChange(index, "lote", e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #2980b9",
-              outline: "none",
-            }}
           />
           <input
             type="text"
             placeholder="Realizó"
-            value={registro.realizo}
-            onChange={(e) => handleChange(index, "realizo", e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #2980b9",
-              outline: "none",
-            }}
+            value={nombreUsuario}
+            readOnly
           />
           <input
             type="text"
@@ -185,12 +171,6 @@ export default function RDODP() {
             onChange={(e) =>
               handleChange(index, "observaciones", e.target.value)
             }
-            style={{
-              padding: "10px",
-              borderRadius: "8px",
-              border: "1px solid #2980b9",
-              outline: "none",
-            }}
           />
         </div>
       ))}

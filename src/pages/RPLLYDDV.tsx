@@ -5,19 +5,31 @@ import autoTable from "jspdf-autotable";
 
 type Registro = {
   fecha: string;
-  recibidos: string;
-  aceptados: string;
-  rechazados: string;
+  vehiculos: {
+    np300Plata: boolean;
+    np300Blanca: boolean;
+    gris: boolean;
+  };
+  reviso: string;
   observaciones: string;
 };
 
-export default function RDEDE() {
+export default function RPLLYDDV() {
 
   const location = useLocation();
   const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
 
   const [registros, setRegistros] = useState<Registro[]>([
-    { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+    {
+      fecha: "",
+      vehiculos: {
+        np300Plata: false,
+        np300Blanca: false,
+        gris: false,
+      },
+      reviso: nombreUsuario,
+      observaciones: "",
+    },
   ]);
 
 
@@ -25,7 +37,16 @@ export default function RDEDE() {
     if (registros.length < 12) {
       setRegistros([
         ...registros,
-        { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+        {
+          fecha: "",
+          vehiculos: {
+            np300Plata: false,
+            np300Blanca: false,
+            gris: false,
+          },
+          reviso: nombreUsuario,
+          observaciones: "",
+        },
       ]);
     } else {
       alert("Solo se pueden registrar hasta 12 días. (2 semanas)");
@@ -35,15 +56,31 @@ export default function RDEDE() {
 
   const handleChange = (index: number, field: keyof Registro, value: string) => {
     const nuevosRegistros = [...registros];
-    nuevosRegistros[index][field] = value;
+    (nuevosRegistros[index][field] as string) = value;
     setRegistros(nuevosRegistros);
   };
 
 
+  const handleCheckboxChange = (
+    index: number,
+    vehiculo: keyof Registro["vehiculos"],
+    checked: boolean
+  ) => {
+    const nuevosRegistros = [...registros];
+    nuevosRegistros[index].vehiculos[vehiculo] = checked;
+    setRegistros(nuevosRegistros);
+  };
+
+  // Generar PDF en formato horizontal
   const generarPDF = async () => {
     try {
-      const doc = new jsPDF();
+      const doc = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4",
+      });
 
+      // Logo
       const logo = await fetch("/lafuente.png");
       const logoBlob = await logo.blob();
       const reader = new FileReader();
@@ -56,33 +93,37 @@ export default function RDEDE() {
         const logoHeight = 25;
         const xPos = (pageWidth - logoWidth) / 2;
 
-        // Logo
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
-        // Título
         doc.setFontSize(16);
-        doc.text(
-          "Registro de Evaluación de Envases",
-          pageWidth / 2,
-          40,
-          { align: "center" }
-        );
+        doc.text("Registro para la Limpieza y Desinfección de Vehículos", pageWidth / 2, 40, {
+          align: "center",
+        });
 
-        // Tabla con todos los registros
         autoTable(doc, {
           startY: 50,
-          head: [["Fecha", "Recibidos", "Aceptados", "Rechazados", "Realizó", "Observaciones"]],
+          head: [
+            [
+              "Fecha",
+              "NP-300 PLATA",
+              "NP-300 BLANCA",
+              "GRIS",
+              "Revisó",
+              "Observaciones",
+            ],
+          ],
           body: registros.map((r) => [
             r.fecha,
-            r.recibidos,
-            r.aceptados,
-            r.rechazados,
+            r.vehiculos.np300Plata ? "SÍ" : "",
+            r.vehiculos.np300Blanca ? "SÍ" : "",
+            r.vehiculos.gris ? "SÍ" : "",
             nombreUsuario,
             r.observaciones,
           ]),
           theme: "grid",
           headStyles: { fillColor: [52, 152, 219], textColor: 255 },
           bodyStyles: { fillColor: [245, 251, 255] },
+          styles: { fontSize: 9 },
         });
 
         doc.save("reporte.pdf");
@@ -116,7 +157,7 @@ export default function RDEDE() {
       />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
-        Registro de Evaluación de Envases
+        Registro para la Limpieza y Desinfección de Vehículos
       </h2>
 
       {registros.map((registro, index) => (
@@ -128,10 +169,10 @@ export default function RDEDE() {
             gap: "12px",
             padding: "15px",
             marginBottom: "20px",
-            backgroundColor: "#656fdd",
+            backgroundColor: "#73b2e9",
             borderRadius: "12px",
             boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-            maxWidth: "400px",
+            maxWidth: "500px",
             margin: "0 auto",
           }}
         >
@@ -139,36 +180,46 @@ export default function RDEDE() {
             type="date"
             value={registro.fecha}
             onChange={(e) => handleChange(index, "fecha", e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Recibidos"
-            value={registro.recibidos}
-            onChange={(e) => handleChange(index, "recibidos", e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Aceptados"
-            value={registro.aceptados}
-            onChange={(e) => handleChange(index, "aceptados", e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Rechazados"
-            value={registro.rechazados}
-            onChange={(e) => handleChange(index, "rechazados", e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Realizó"
-            value={nombreUsuario} // 👈 siempre el nombre del usuario
-            readOnly
             style={{
-              backgroundColor: "#f0f0f0",
-              fontWeight: "bold",
-              color: "#333",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
             }}
           />
+
+
+          <div style={{ textAlign: "left" }}>
+            {Object.entries(registro.vehiculos).map(([vehiculo, valor]) => (
+              <label key={vehiculo}>
+                <input
+                  type="checkbox"
+                  checked={valor}
+                  onChange={(e) =>
+                    handleCheckboxChange(index, vehiculo as keyof Registro["vehiculos"], e.target.checked)
+                  }
+                />{" "}
+                {vehiculo.charAt(0).toUpperCase() + vehiculo.slice(1)}
+                <br />
+              </label>
+            ))}
+          </div>
+
+          <input
+            type="text"
+            placeholder="Revisó"
+            value={nombreUsuario}
+            readOnly
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              backgroundColor: "#dfe6e9",
+              color: "#2d3436",
+              fontWeight: "bold",
+            }}
+          />
+
           <input
             type="text"
             placeholder="Observaciones"
@@ -176,6 +227,12 @@ export default function RDEDE() {
             onChange={(e) =>
               handleChange(index, "observaciones", e.target.value)
             }
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
         </div>
       ))}

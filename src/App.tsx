@@ -5,6 +5,11 @@ import RDODP from "./pages/RDOP";
 import RDEDE from "./pages/RDEDE";
 import RDLYDDA from "./pages/RDLYDDA";
 import RPLYDDE from "./pages/RPLYDDE";
+import RDAPDA from "./pages/RDAPDA";
+import RPLLYDDV from "./pages/RPLLYDDV";
+import RDPEPS from "./pages/RDPEPS";
+import RDSYDPL from "./pages/RDSYDPL";
+import RDMDE from "./pages/RDMDE";
 
 export default function App() {
   return (
@@ -16,6 +21,11 @@ export default function App() {
         <Route path="/registro-de-evaluacion-de-envases" element={<RDEDE />} />
         <Route path="/registro-para-la-limpieza-y-desinfeccion-de-areas" element={<RDLYDDA />} />
         <Route path="/registro-para-la-limpieza-y-desinfeccion-de-equipos" element={<RPLYDDE />} />
+        <Route path="/registro-de-analisis-periodico-del-agua" element={<RDAPDA />} />
+        <Route path="/registro-para-la-limpieza-y-desinfeccion-de-vehiculos" element={<RPLLYDDV />} />
+        <Route path="/registro-de-primeras-entradas-primeras-salidas" element={<RDPEPS />} />
+        <Route path="/registro-de-salidas-y-destino-por-lote" element={<RDSYDPL />} />
+        <Route path="/registro-de-mantenimiento-de-equipo" element={<RDMDE />} />
       </Routes>
     </Router>
   );

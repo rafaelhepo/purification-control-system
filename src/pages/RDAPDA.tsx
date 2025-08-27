@@ -1,49 +1,52 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useLocation } from "react-router-dom";
 
 type Registro = {
   fecha: string;
-  recibidos: string;
-  aceptados: string;
-  rechazados: string;
+  aguaEntrada: string;
+  filtro1: string;
+  filtro2: string;
+  aguaGrifo: string;
+  realizo: string;
   observaciones: string;
 };
 
-export default function RDEDE() {
+export default function RDAPDA() {
 
   const location = useLocation();
-  const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
+  const nombreUsuario = (location.state as { nombre?: string }) ?.nombre || "";
 
   const [registros, setRegistros] = useState<Registro[]>([
-    { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+    { fecha: "", aguaEntrada: "", filtro1: "0.3", filtro2: "", aguaGrifo: "", realizo: "", observaciones: "" },
   ]);
 
-
+  // Agregar un nuevo día (máx 12)
   const agregarDia = () => {
     if (registros.length < 12) {
       setRegistros([
         ...registros,
-        { fecha: "", recibidos: "", aceptados: "", rechazados: "", observaciones: "" },
+        { fecha: "", aguaEntrada: "", filtro1: "", filtro2: "", aguaGrifo: "", realizo: nombreUsuario, observaciones: "" },
       ]);
     } else {
       alert("Solo se pueden registrar hasta 12 días. (2 semanas)");
     }
   };
 
-
+  // Manejar cambios en los inputs
   const handleChange = (index: number, field: keyof Registro, value: string) => {
     const nuevosRegistros = [...registros];
     nuevosRegistros[index][field] = value;
     setRegistros(nuevosRegistros);
   };
 
-
+  // Generar PDF
   const generarPDF = async () => {
     try {
       const doc = new jsPDF();
 
+      // Usar la ruta correcta (sin /public)
       const logo = await fetch("/lafuente.png");
       const logoBlob = await logo.blob();
       const reader = new FileReader();
@@ -51,6 +54,7 @@ export default function RDEDE() {
       reader.onloadend = () => {
         const imgData = reader.result as string;
 
+        // Dimensiones de página y logo
         const pageWidth = doc.internal.pageSize.getWidth();
         const logoWidth = 25;
         const logoHeight = 25;
@@ -62,7 +66,7 @@ export default function RDEDE() {
         // Título
         doc.setFontSize(16);
         doc.text(
-          "Registro de Evaluación de Envases",
+          "Registro de Analisis Periodico del Agua (determinación de cloro residual)",
           pageWidth / 2,
           40,
           { align: "center" }
@@ -71,18 +75,19 @@ export default function RDEDE() {
         // Tabla con todos los registros
         autoTable(doc, {
           startY: 50,
-          head: [["Fecha", "Recibidos", "Aceptados", "Rechazados", "Realizó", "Observaciones"]],
+          head: [["Fecha", "Agua de entrada (lectura ppm) Red", "Filtro 1 (lectura ppm) Lecho profundo", "Filtro 2 (lectura ppm) Carbon activado", "Agua de Grifo", "Realizó", "Observaciones"]],
           body: registros.map((r) => [
             r.fecha,
-            r.recibidos,
-            r.aceptados,
-            r.rechazados,
+            r.aguaEntrada,
+            r.filtro1,
+            r.filtro2,
+            r.aguaGrifo,
             nombreUsuario,
             r.observaciones,
           ]),
           theme: "grid",
-          headStyles: { fillColor: [52, 152, 219], textColor: 255 },
-          bodyStyles: { fillColor: [245, 251, 255] },
+          headStyles: { fillColor: [52, 152, 219], textColor: 255 }, // Azul agua
+          bodyStyles: { fillColor: [245, 251, 255] }, // Azul muy claro
         });
 
         doc.save("reporte.pdf");
@@ -105,18 +110,18 @@ export default function RDEDE() {
         minHeight: "100vh",
       }}
     >
-      <img
-        src="/lafuente.png"
-        alt="Logo Purificadora"
-        style={{
-          maxWidth: "120px",
-          height: "auto",
-          marginBottom: "15px",
-        }}
-      />
+       <img
+    src="/lafuente.png" 
+    alt="Logo Purificadora"
+    style={{
+      maxWidth: "120px", // tamaño máximo
+      height: "auto",    // mantiene proporción
+      marginBottom: "15px",
+    }}
+  />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
-        Registro de Evaluación de Envases
+        Registro de Analisis Periodico del Agua
       </h2>
 
       {registros.map((registro, index) => (
@@ -139,36 +144,79 @@ export default function RDEDE() {
             type="date"
             value={registro.fecha}
             onChange={(e) => handleChange(index, "fecha", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
+
           <input
             type="number"
-            placeholder="Recibidos"
-            value={registro.recibidos}
-            onChange={(e) => handleChange(index, "recibidos", e.target.value)}
+            placeholder="Agua de entrada de la red"
+            value={registro.aguaEntrada}
+            onChange={(e) => handleChange(index, "aguaEntrada", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
+
           <input
             type="number"
-            placeholder="Aceptados"
-            value={registro.aceptados}
-            onChange={(e) => handleChange(index, "aceptados", e.target.value)}
+            placeholder=""
+            value={registro.filtro1}
+            onChange={(e) => handleChange(index, "filtro1", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
+
           <input
             type="number"
-            placeholder="Rechazados"
-            value={registro.rechazados}
-            onChange={(e) => handleChange(index, "rechazados", e.target.value)}
+            placeholder="Filtro No. 2 Lecho - Carbon Activado"
+            value={registro.filtro2}
+            onChange={(e) => handleChange(index, "filtro2", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
+
+          <input
+            type="number"
+            placeholder="Agua de grifo"
+            value={registro.aguaGrifo}
+            onChange={(e) => handleChange(index, "aguaGrifo", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
+
           <input
             type="text"
             placeholder="Realizó"
-            value={nombreUsuario} // 👈 siempre el nombre del usuario
-            readOnly
+            value={nombreUsuario}
+            onChange={(e) => handleChange(index, "realizo", e.target.value)}
             style={{
-              backgroundColor: "#f0f0f0",
-              fontWeight: "bold",
-              color: "#333",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
             }}
           />
+
           <input
             type="text"
             placeholder="Observaciones"
@@ -176,7 +224,14 @@ export default function RDEDE() {
             onChange={(e) =>
               handleChange(index, "observaciones", e.target.value)
             }
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
           />
+
         </div>
       ))}
 
