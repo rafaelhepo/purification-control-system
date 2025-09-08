@@ -152,6 +152,21 @@ export default function Menu() {
             📄 Registro de Mantenimiento de Equipo
           </button>
         </Link>
+
+        <Link to="/metodo-de-desinfeccion" state={{ nombre }}>
+          <button
+            style={{
+              padding: "10px",
+              fontSize: "1rem",
+              backgroundColor: "#56ccf2",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          >
+            📄 Metodo De Desinfección
+          </button>
+        </Link>
       </div>
     </div>
   );

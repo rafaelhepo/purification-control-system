@@ -10,6 +10,7 @@ import RPLLYDDV from "./pages/RPLLYDDV";
 import RDPEPS from "./pages/RDPEPS";
 import RDSYDPL from "./pages/RDSYDPL";
 import RDMDE from "./pages/RDMDE";
+import MDD from "./pages/MDD";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/registro-de-primeras-entradas-primeras-salidas" element={<RDPEPS />} />
         <Route path="/registro-de-salidas-y-destino-por-lote" element={<RDSYDPL />} />
         <Route path="/registro-de-mantenimiento-de-equipo" element={<RDMDE />} />
+        <Route path="/metodo-de-desinfeccion" element={<MDD />} />
       </Routes>
     </Router>
   );
