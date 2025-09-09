@@ -136,128 +136,196 @@ export default function MDD() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-2xl mx-auto">
-        <img
-          src="/lafuente.png"
-          alt="Logo Purificadora"
-          className="mx-auto mb-6 max-w-[120px]"
-        />
+    <div
+      style={{
+        textAlign: "center",
+        padding: "30px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "#eef2f6",
+        minHeight: "100vh",
+      }}
+    >
+      <img
+        src="/lafuente.png"
+        alt="Logo Purificadora"
+        style={{
+          maxWidth: "120px",
+          height: "auto",
+          marginBottom: "15px",
+        }}
+      />
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
-          Método De Desinfección
-        </h2>
+      <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
+        Metodo De Desinfección
+      </h2>
 
-        {metodos.map((registro, index) => (
-          <div
-            key={index}
-            className="bg-indigo-600 p-5 rounded-xl shadow-md mb-6 space-y-4"
-          >
-            {/* Fecha */}
-            <input
-              type="date"
-              value={registro.fecha}
-              onChange={(e) => handleChange(index, "fecha", e.target.value)}
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-white"
-            />
+      {metodos.map((registro, index) => (
+        <div
+          key={index}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            padding: "15px",
+            marginBottom: "20px",
+            backgroundColor: "#656fdd",
+            borderRadius: "12px",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+            maxWidth: "400px",
+            margin: "0 auto",
+          }}
+        >
+          <input
+            type="date"
+            value={registro.fecha}
+            onChange={(e) => handleChange(index, "fecha", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
 
-            {/* Tinacos */}
-            <input
-              type="text"
-              placeholder="Tinacos (1,2,3...)"
-              value={registro.tinacos}
-              onChange={(e) => handleChange(index, "tinacos", e.target.value)}
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-white"
-            />
+          <input
+            type="text"
+            placeholder="Tinacos (1,2,3...)"
+            value={registro.tinacos}
+            onChange={(e) => handleChange(index, "tinacos", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
 
-            {/* Desinfectante */}
-            <input
-              type="text"
-              placeholder="Desinfectante (ej. 6%)"
-              value={registro.desinfectante}
-              onChange={(e) =>
-                handleChange(index, "desinfectante", e.target.value)
-              }
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-white"
-            />
+          <input
+            type="text"
+            placeholder="Desinfectante (ej. 6%)"
+            value={registro.desinfectante}
+            onChange={(e) => handleChange(index, "desinfectante", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
 
-            {/* Cantidad */}
-            <input
-              type="text"
-              placeholder="Cantidad (ej. 55 ml)"
-              value={registro.cantidad}
-              onChange={(e) => handleChange(index, "cantidad", e.target.value)}
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-white"
-            />
+          <input
+            type="text"
+            placeholder="Cantidad (ej. 55 ml)"
+            value={registro.cantidad}
+            onChange={(e) => handleChange(index, "cantidad", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
 
-            {/* HORA: DESDE Y HASTA — ¡SIN DESBORDAMIENTO! */}
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <div className="flex-1 min-w-[120px]">
-                <label className="block text-white font-bold text-xs mb-1">
-                  Desde:
-                </label>
-                <input
-                  type="time"
-                  value={registro.hora.de}
-                  onChange={(e) =>
-                    handleHoraChange(index, "de", e.target.value)
-                  }
-                  className="w-full px-3 py-2 rounded border border-blue-600 outline-none bg-white text-sm"
-                />
-              </div>
-              <div className="flex-1 min-w-[120px]">
-                <label className="block text-white font-bold text-xs mb-1">
-                  Hasta:
-                </label>
-                <input
-                  type="time"
-                  value={registro.hora.a}
-                  onChange={(e) =>
-                    handleHoraChange(index, "a", e.target.value)
-                  }
-                  className="w-full px-3 py-2 rounded border border-blue-600 outline-none bg-white text-sm"
-                />
-              </div>
+          {/* HORA: DESDE Y HASTA EN DOS INPUTS */}
+          <div style={{ display: "flex", gap: "8px" }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: "block", textAlign: "left", color: "#fff", fontWeight: "bold" }}>
+                Desde:
+              </label>
+              <input
+                type="time"
+                value={registro.hora.de}
+                onChange={(e) => handleHoraChange(index, "de", e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #2980b9",
+                  outline: "none",
+                }}
+              />
             </div>
-
-            {/* Realizó */}
-            <input
-              type="text"
-              placeholder="Realizó"
-              value={registro.realizo}
-              readOnly
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-gray-100 text-gray-700 font-medium"
-            />
-
-            {/* Observaciones */}
-            <input
-              type="text"
-              placeholder="Observaciones"
-              value={registro.observaciones}
-              onChange={(e) =>
-                handleChange(index, "observaciones", e.target.value)
-              }
-              className="w-full p-3 rounded-lg border border-blue-600 outline-none bg-white"
-            />
+            <div style={{ flex: 1 }}>
+              <label style={{ display: "block", textAlign: "left", color: "#fff", fontWeight: "bold" }}>
+                Hasta:
+              </label>
+              <input
+  type="time"
+  value={registro.hora.a}
+  onChange={(e) => handleHoraChange(index, "a", e.target.value)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    borderRadius: "8px",
+    border: "1px solid #2980b9",
+    outline: "none",
+    boxSizing: "border-box",
+    maxWidth: "100%", // ¡Importante!
+    minWidth: "100px", // Evita que sea demasiado pequeño
+    fontSize: "14px", // Reduce un poco el tamaño del texto
+  }}
+/>
+            </div>
           </div>
-        ))}
 
-        {/* Botones */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
-          <button
-            onClick={agregarDia}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium"
-          >
-            Agregar Día
-          </button>
+          <input
+            type="text"
+            placeholder="Realizó"
+            value={registro.realizo}
+            readOnly
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+              backgroundColor: "#eee",
+            }}
+          />
 
-          <button
-            onClick={generarPDF}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
-          >
-            Generar PDF
-          </button>
+          <input
+            type="text"
+            placeholder="Observaciones"
+            value={registro.observaciones}
+            onChange={(e) => handleChange(index, "observaciones", e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #2980b9",
+              outline: "none",
+            }}
+          />
         </div>
+      ))}
+
+      <div style={{ marginTop: "20px" }}>
+        <button
+          onClick={agregarDia}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#3498db",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            marginRight: "10px",
+            cursor: "pointer",
+          }}
+        >
+          Agregar Día
+        </button>
+
+        <button
+          onClick={generarPDF}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#27ae60",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}
+        >
+          Generar PDF
+        </button>
       </div>
     </div>
   );
