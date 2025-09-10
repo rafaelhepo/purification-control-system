@@ -11,6 +11,7 @@ import RDPEPS from "./pages/RDPEPS";
 import RDSYDPL from "./pages/RDSYDPL";
 import RDMDE from "./pages/RDMDE";
 import MDD from "./pages/MDD";
+import CDC from "./pages/CDC";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/registro-de-salidas-y-destino-por-lote" element={<RDSYDPL />} />
         <Route path="/registro-de-mantenimiento-de-equipo" element={<RDMDE />} />
         <Route path="/metodo-de-desinfeccion" element={<MDD />} />
+        <Route path="/concentracion-de-cloro" element={<CDC />} />
       </Routes>
     </Router>
   );
