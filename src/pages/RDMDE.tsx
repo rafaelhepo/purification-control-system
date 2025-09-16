@@ -61,7 +61,7 @@ const nombresAmigables: Record<EquipoPredefinido, string> = {
   lamparaVerificadora: "Lámpara Verificadora",
 };
 
-export default function RPLYDDE() {
+export default function RDMDE() {
   const location = useLocation();
   const nombreUsuario = (location.state as { nombre?: string })?.nombre || "";
 
@@ -187,7 +187,7 @@ export default function RPLYDDE() {
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
         doc.setFontSize(16);
-        doc.text("Registro para la Limpieza y Desinfección de Equipos", pageWidth / 2, 40, {
+        doc.text("Registro de Mantenimiento de Equipo", pageWidth / 2, 40, {
           align: "center",
         });
 
@@ -254,7 +254,7 @@ export default function RPLYDDE() {
       />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
-        Registro para la Limpieza y Desinfección de Equipos
+        Registro de Mantenimiento de Equipo
       </h2>
 
       {registros.map((registro, index) => (
@@ -369,8 +369,8 @@ export default function RPLYDDE() {
               padding: "10px",
               borderRadius: "8px",
               border: "1px solid #2980b9",
-              backgroundColor: "#dfe6e9",
-              color: "#2d3436",
+              backgroundColor: "#2d3436",
+              color: "#dfe6e9",
               fontWeight: "bold",
             }}
           />

@@ -278,7 +278,7 @@ export default function MDD() {
               borderRadius: "8px",
               border: "1px solid #2980b9",
               outline: "none",
-              backgroundColor: "#eee",
+              backgroundColor: "#0a0909",
             }}
           />
 

@@ -265,8 +265,8 @@ export default function RPLYDDE() {
               padding: "10px",
               borderRadius: "8px",
               border: "1px solid #2980b9",
-              backgroundColor: "#dfe6e9",
-              color: "#2d3436",
+              backgroundColor: "#2d3436",
+              color: "#dfe6e9",
               fontWeight: "bold",
             }}
           />

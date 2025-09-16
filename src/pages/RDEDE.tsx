@@ -163,11 +163,6 @@ export default function RDEDE() {
             placeholder="Realizó"
             value={nombreUsuario} // 👈 siempre el nombre del usuario
             readOnly
-            style={{
-              backgroundColor: "#f0f0f0",
-              fontWeight: "bold",
-              color: "#333",
-            }}
           />
           <input
             type="text"

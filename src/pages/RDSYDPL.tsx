@@ -97,7 +97,7 @@ export default function RDSYDPL() {
         doc.addImage(imgData, "PNG", xPos, 10, logoWidth, logoHeight);
 
         doc.setFontSize(16);
-        doc.text("Registro para la Limpieza y Desinfección de Vehículos", pageWidth / 2, 40, {
+        doc.text("Registro de Salidas y Destino por Lote", pageWidth / 2, 40, {
           align: "center",
         });
 
@@ -155,7 +155,7 @@ export default function RDSYDPL() {
       />
 
       <h2 style={{ color: "#1c3853", marginBottom: "20px" }}>
-        Registro para la Limpieza y Desinfección de Vehículos
+        Registro de Salidas y Destino por Lote
       </h2>
 
       {registros.map((registro, index) => (

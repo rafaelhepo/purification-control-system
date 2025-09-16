@@ -299,7 +299,7 @@ export default function CDC() {
               borderRadius: "8px",
               border: "1px solid #2980b9",
               outline: "none",
-              backgroundColor: "#eee",
+              backgroundColor: "#0a0a0a",
             }}
           />
 

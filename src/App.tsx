@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
-import RDODP from "./pages/RDOP";
+import RDODP from "./pages/RDODP";
 import RDEDE from "./pages/RDEDE";
 import RDLYDDA from "./pages/RDLYDDA";
 import RPLYDDE from "./pages/RPLYDDE";
