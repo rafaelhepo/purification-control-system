@@ -27,7 +27,7 @@ export default function CDC() {
       fecha: "",
       tinacos: "",
       tipoDeCloro: "Cloralex",
-      cantidad: "55 ml",
+      cantidad: "100 ml",
       ppm: '3.0',
       hora: { de: "", a: "" },
       fechaVerificacion: '',
@@ -45,7 +45,7 @@ export default function CDC() {
           fecha: "",
           tinacos: "",
           tipoDeCloro: "Cloralex",
-          cantidad: "55 ml",
+          cantidad: "100 ml",
           ppm: '3.0',
           hora: { de: "", a: "" },
           fechaVerificacion: '',
@@ -223,7 +223,7 @@ export default function CDC() {
 
           <input
             type="text"
-            placeholder="Cantidad (ej. 55 ml)"
+            placeholder="Cantidad (ej.100 ml)"
             value={registro.cantidad}
             onChange={(e) => handleChange(index, "cantidad", e.target.value)}
             style={{

@@ -25,7 +25,7 @@ export default function MDD() {
       fecha: "",
       tinacos: "",
       desinfectante: "6%",
-      cantidad: "55 ml",
+      cantidad: "100 ml",
       hora: { de: "", a: "" },
       realizo: nombreUsuario,
       observaciones: "",
@@ -41,7 +41,7 @@ export default function MDD() {
           fecha: "",
           tinacos: "",
           desinfectante: "6%",
-          cantidad: "55 ml",
+          cantidad: "100 ml",
           hora: { de: "", a: "" },
           realizo: nombreUsuario,
           observaciones: "",
@@ -215,7 +215,7 @@ export default function MDD() {
 
           <input
             type="text"
-            placeholder="Cantidad (ej. 55 ml)"
+            placeholder="Cantidad (ej.100 ml)"
             value={registro.cantidad}
             onChange={(e) => handleChange(index, "cantidad", e.target.value)}
             style={{
